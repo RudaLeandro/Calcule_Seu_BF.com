@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Descubra sua porcentagem de gordura corporal</title>
+</head>
+<body>
+
+    <h1>Calcule seu porcentual de gordura</h1>
+
+    <h2>Histórico</h2>
+    <button id="botaoHistorico">Ver historico</button>
+    <div id="historico"></div>
+
+    <h2>Selecione seu gênero para começar</h2>
+    <button onclick="mostrarHomem()">Homem</button>
+    <button onclick="mostrarMulher()">Mulher</button>
+    <p id="resultado"></p>
+
+
+    <div id="formMasculino" style="display: none;">
+
+    <h3>Peso (kg)</h3>
+    <input type="number" id="PesoM" placeholder="Peso">
+
+    <h3>Altura (cm)</h3>
+    <input type="number" id="AlturaM" placeholder="Altura">
+
+    <h3>Cintura (cm)</h3>
+    <input type="number" id="CinturaM" placeholder="Cintura">
+
+    <h3>Pescoço (cm)</h3>
+    <input type="number" id="PescocoM" placeholder="Pescoco">
+
+    </div>
+
+    <div id="formFeminino" style="display: none;">
+
+    <h3>Peso (kg)</h3>
+    <input type="number" id="PesoF" placeholder="Peso">
+
+    <h3>Altura (cm)</h3>
+    <input type="number" id="AlturaF" placeholder="Altura">
+
+    <h3>Cintura (cm)</h3>
+    <input type="number" id="CinturaF" placeholder="Cintura">
+
+    <h3>Pescoço (cm)</h3>
+    <input type="number" id="PescocoF" placeholder="Pescoco">
+
+    <h3>Quadril (cm)</h3>
+    <input type="number" id="Quadril" placeholder="Quadril"> <br>
+
+    </div>
+
+    <button id="btnCalcular" onclick="calcular()" style="display: none;">Calcular</button>
+
+    <script src="script.js"></script>
+
+
+</body>    
+</html>
+

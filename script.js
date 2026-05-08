@@ -1,5 +1,7 @@
 let genero = "";
 
+let ultimoResultado = "";
+
 function mostrarHomem(){
     document.getElementById("formMasculino").style.display = "block";
     document.getElementById("formFeminino").style.display = "none";
@@ -45,6 +47,10 @@ function calcular() {
 
     document.getElementById("resultado").innerText = 
     "Sua Gordura corporal / BF é: " + BfM.toFixed(2) + "%";
+
+    ultimoResultado = "BF: " + BfM.toFixed(2) + "%";
+    document.getElementById("resultado").innerText = ultimoResultado;
+
 }
     if (genero === "formFeminino"){
 
@@ -90,7 +96,135 @@ function calcular() {
 
         document.getElementById("resultado").innerText = "Sua Gordura corporal / BF é de: "
         +BfF.toFixed(2) + "%";
+
+        ultimoResultado = "BF: " + BfF.toFixed(2) + "%";
+        document.getElementById("resultado").innerText = ultimoResultado;
+
     }
 
 }
+
+
+function salvarHistorico(texto){
+    let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+    historico.push(texto);
+
+
+    localStorage.setItem("historico", JSON.stringify(historico));
+}
+
+function atualizarHistorico(){
+
+    let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+    let div = document.getElementById("historico");
+    div.innerHTML = "";
+
+    historico.forEach((item, index) => {
+        let divItem = document.createElement("div");
+        
+        let p = document.createElement("p");
+        p.innerText = item;
+
+        let botaoExcluir = document.createElement("button");
+        botaoExcluir.innerText = "Excluir";
+
+        botaoExcluir.onclick = function(){
+            excluirItem(index);
+        };
+
+        divItem.appendChild(p);
+        divItem.appendChild(botaoExcluir);
+
+        div.appendChild(divItem);
+    });
+}
+
+function mostrarHistorico(){
+
+    let div = document.getElementById("historico");
+    let botao = document.getElementById("botaoHistorico");
+    
+    if (div.style.display === "none"){
+        div.style.display = "block";
+
+        botao.innerText = "Fechar historico";
+
+        atualizarHistorico();
+
+    }else {
+        div.style.display = "none";
+
+        botao.innerText = "Ver historico";
+    }
+}
+
+function excluirItem(index) {
+
+    let historico = JSON.parse(localStorage.getItem("historico")) || [];
+    historico.splice(index, 1);
+    localStorage.setItem("historico", JSON.stringify(historico));
+
+    atualizarHistorico();
+}
+
+
+function salvarResultado(){
+    if (ultimoResultado === ""){
+        alert("Calcule primeiro!!");
+        return;
+    }
+
+    let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+    historico.push(ultimoResultado);
+
+    localStorage.setItem("historico", JSON.stringify(historico));
+
+    alert("Salvo no historico!!");
+}
+
+function salvarResultado(){
+    if (ultimoResultado === ""){
+        alert("Calcule primeiro!!");
+        return;
+    }
+
+    let nome = prompt("De um nome para esse resultado:");
+
+    if(!nome || nome.trim() === ""){
+        alert("Nome inválido!!");
+        return;
+    }
+
+    let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+    let registro = nome + " → " + ultimoResultado;
+
+    historico.push(registro);
+
+    localStorage.setItem("historico", JSON.stringify(historico));
+
+    alert("Salvo com sucesso!!");
+}
+
+function limparCampos(){
+
+    let ids = [
+        "CinturaM","AlturaM","PescocoM","PescocoM","PesoM",
+        "CinturaF","AlturaF","PescocoF","Quadril","PesoF"
+    ];
+
+    ids.forEach(id => {
+        let el = document.getElementById(id);
+        if (el) el.value = "";
+    });
+
+    let resultado = document.getElementById("resultado");
+    if (resultado) resultado.innerText = "";
+}
+
+document.getElementById("btnLimpar").addEventListener("click", limparCampos);
+
 

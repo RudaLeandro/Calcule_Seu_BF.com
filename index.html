@@ -2,14 +2,17 @@
 <html>
 <head>
     <title>Descubra sua porcentagem de gordura corporal</title>
+
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
 
     <h1>Calcule seu porcentual de gordura</h1>
 
-    <h2>Histórico</h2>
-    <button id="botaoHistorico">Ver historico</button>
-    <div id="historico"></div>
+    <button id="botaoHistorico" onclick="mostrarHistorico()">Ver Historico</button>
+    <div id="historico" style="display: none;"></div>
+
 
     <h2>Selecione seu gênero para começar</h2>
     <button onclick="mostrarHomem()">Homem</button>
@@ -53,6 +56,10 @@
     </div>
 
     <button id="btnCalcular" onclick="calcular()" style="display: none;">Calcular</button>
+
+    <button onclick="salvarResultado()">Salvar</button>
+
+    <button id="btnLimpar">Limpar</button>
 
     <script src="script.js"></script>
 

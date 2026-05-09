@@ -1,5 +1,5 @@
 body{
-    background-color: #1e1e1e;
+    background-color: #161515;
     color: white;
     font-family: Arial, Arial, Helvetica, sans-serif;
 
@@ -12,12 +12,16 @@ body{
 }
 
 h1{
-    color: #ffffff;
+    color: #b2b5b6; 
     font-size: 40px;
+    -webkit-text-stroke: 1px black;
 }
 
 h2{
     margin-top: 30px;
+    color: #b2b5b6;
+    font-size: 30px;
+    -webkit-text-stroke: 1px black;
 }
 
 input{
@@ -50,9 +54,62 @@ button{
 
     margin-top: 8px;
     margin-bottom: 8px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 button:hover{
     background-color: #0a3f46;
     transform: scale(1.05);
+}
+
+#painelInfo{
+
+    position: fixed;
+    right: 20px;
+    top: 100px;
+    width: 400px;
+    background-color: #1e004d10;
+    border: 2px solid #041149;
+    border-radius: 35px;
+    padding: 50px;
+    color: #b2b5b6;
+    box-shadow: 0px 0px 30px #0243cf;
+    display: none;
+}
+#painelInfo h2{
+
+    color: #b2b5b6;
+    -webkit-text-stroke: 1px black;
+    text-align: center;
+    font-size: 30px;
+}
+
+#painelInfo p{
+
+    color: #b2b5b6;
+    -webkit-text-stroke: 1px black;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+#acoes{
+    display: flex;
+    gap: 10;
+}
+
+#genero{
+    display: flex;
+    gap: 10;
+}
+
+#btnverManutencao{
+    color: #b2b5b6;
+    background-color: #051a75;
+    transition: 0.5s;
+}
+#btnverManutencao:hover{
+    background-color: rgb(4, 14, 71);
+    transform: scale(1.1);
 }

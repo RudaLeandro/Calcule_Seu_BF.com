@@ -15,10 +15,11 @@
 
 
     <h2>Selecione seu gênero para começar</h2>
+    <div id="genero">
     <button onclick="mostrarHomem()">Homem</button>
     <button onclick="mostrarMulher()">Mulher</button>
     <p id="resultado"></p>
-
+    </div>
 
     <div id="formMasculino" style="display: none;">
 
@@ -55,13 +56,24 @@
 
     </div>
 
+    <div id="acoes">
     <button id="btnCalcular" onclick="calcular()" style="display: none;">Calcular</button>
 
-    <button onclick="salvarResultado()">Salvar</button>
+    <button id="btnSalvar" onclick="salvarResultado()" style="display: none;">Salvar</button>
 
-    <button id="btnLimpar">Limpar</button>
+    <button id="btnLimpar" style="display: none;">Limpar</button>
+    </div>
+
+    <h2>Selecione o seu nível de atividade?</h2>
+    <button id="btnSedentario" class="btnAtividade" onclick="nivelAtividade(10, this)">Sedentário</button>
+    <button id="btnLeve" class="btnAtividade" onclick="nivelAtividade(12, this)">Levemente ativo</button>
+    <button id="btnModerado" class="btnAtividade" onclick="nivelAtividade(13, this)">Moderadamente ativo</button>
+    <button id="btnMuito" class="btnAtividade" onclick="nivelAtividade(15, this)">Muito ativo</button>
+    <button id="btnExtremo" class="btnAtividade" onclick="nivelAtividade(19, this)">Extremamente ativo</button>
 
     <script src="script.js"></script>
+
+    <div id="painelInfo"></div>
 
 
 </body>    

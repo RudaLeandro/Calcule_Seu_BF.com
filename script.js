@@ -1,19 +1,65 @@
 let genero = "";
-
+let infoAberta = false;
+let multiplicadorAtividade = 0;
 let ultimoResultado = "";
+let ultimoLBM = 0;
+let ultimoBF = 0;
+let ultimoPeso = 0;
+let manutencao =0;
+let ultimoBotaoInfo = null;
+let manutencaoAberta =false; 
 
 function mostrarHomem(){
-    document.getElementById("formMasculino").style.display = "block";
+
+    let form = document.getElementById("formMasculino");
+
+    if (form.style.display === "block"){
+
+    form.style.display = "none";
+
+    document.getElementById("btnCalcular").style.display = "none";
+    document.getElementById("btnSalvar").style.display = "none";
+    document.getElementById("btnLimpar").style.display = "none";
+
+    genero = "";
+
+    } else {
+
+        form.style.display = "block";
+
     document.getElementById("formFeminino").style.display = "none";
+
     document.getElementById("btnCalcular").style.display = "block";
-    genero = "formMasculino";
+    document.getElementById("btnSalvar").style.display = "block";
+    document.getElementById("btnLimpar").style.display = "block";
+
+        genero = "formMasculino";
+    }
 }
 
 function mostrarMulher(){
-    document.getElementById("formMasculino").style.display = "none";
-    document.getElementById("formFeminino").style.display = "block";
-    document.getElementById("btnCalcular").style.display = "block";
-    genero = "formFeminino";
+    let form = document.getElementById("formFeminino");
+
+    if (form.style.display === "block"){
+        form.style.display = "none";
+        document.getElementById("btnCalcular").style.display = "none";
+        document.getElementById("btnSalvar").style.display = "none";
+        document.getElementById("btnLimpar").style.display = "none";
+
+        genero = "";
+
+    } else {
+
+        form.style.display = "block";
+
+        document.getElementById("formMasculino").style.display = "none";
+
+        document.getElementById("btnCalcular").style.display = "block";
+        document.getElementById("btnSalvar").style.display = "block";
+        document.getElementById("btnLimpar").style.display = "block";
+
+        genero = "formFeminino";
+    }
 }
 
 
@@ -45,8 +91,8 @@ function calcular() {
         + 0.15456 * Math.log10(AlturaM))
         - 450;
 
-    document.getElementById("resultado").innerText = 
-    "Sua Gordura corporal / BF é: " + BfM.toFixed(2) + "%";
+    ultimoBF = BfM;
+    ultimoPeso = Number(document.getElementById("PesoM").value);
 
     ultimoResultado = "BF: " + BfM.toFixed(2) + "%";
     document.getElementById("resultado").innerText = ultimoResultado;
@@ -94,8 +140,8 @@ function calcular() {
             +0.22100 * Math.log10(AlturaF)
         ) - 450;
 
-        document.getElementById("resultado").innerText = "Sua Gordura corporal / BF é de: "
-        +BfF.toFixed(2) + "%";
+        ultimoBF = BfF;
+        ultimoPeso = Number(document.getElementById("PesoF").value);
 
         ultimoResultado = "BF: " + BfF.toFixed(2) + "%";
         document.getElementById("resultado").innerText = ultimoResultado;
@@ -103,7 +149,6 @@ function calcular() {
     }
 
 }
-
 
 function salvarHistorico(texto){
     let historico = JSON.parse(localStorage.getItem("historico")) || [];
@@ -125,7 +170,7 @@ function atualizarHistorico(){
         let divItem = document.createElement("div");
         
         let p = document.createElement("p");
-        p.innerText = item;
+        p.innerText = item.nome + " → BF: " + item.bf.toFixed(2) + "%";
 
         let botaoExcluir = document.createElement("button");
         botaoExcluir.innerText = "Excluir";
@@ -134,11 +179,65 @@ function atualizarHistorico(){
             excluirItem(index);
         };
 
+        let botaoInfo = document.createElement("button");
+        botaoInfo.innerText = "Mais informações";
+
+        botaoInfo.onclick = function(){
+            mostrarInfo(item, botaoInfo);
+        };
+
         divItem.appendChild(p);
         divItem.appendChild(botaoExcluir);
+        divItem.appendChild(botaoInfo);
 
         div.appendChild(divItem);
+
     });
+}
+
+function mostrarInfo(item, botao){
+
+    let painel = document.getElementById("painelInfo");
+
+    if (ultimoBotaoInfo && ultimoBotaoInfo !== botao){
+        ultimoBotaoInfo.innerText = "Mais informações";
+    }
+
+    if(infoAberta){
+        painel.style.display = "none";
+        botao.innerText = "Mais informações"
+        infoAberta = false;
+
+    } else {
+
+    let lbm = item.peso * (1 - item.bf / 100);
+
+    let pesoLb = item.peso * 2.20462;
+
+    let manutencao = pesoLb * multiplicadorAtividade;
+
+    painel.innerHTML = `
+        <h2>${item.nome}</h2>
+
+        <p>BF: ${item.bf.toFixed(2)}%</p>
+
+        <p>LBM: ${lbm.toFixed(2)} kg</p>
+
+        <p>Peso: ${item.peso} kg</p>
+
+        <p>Manutenção: ${manutencao.toFixed(0)} Kcal</p>
+
+        <button id="btnverManutencao" onclick="verManutencao(${manutencao}, ${item.peso}, ${lbm}, this)">
+            Ver Manutenção
+        </button>
+        <div id="infoManutencao"></div>
+        `;
+        painel.style.display = "block";
+        botao.innerText = "Menos informações"
+        ultimoBotaoInfo = botao;
+        infoAberta = true;
+
+    }
 }
 
 function mostrarHistorico(){
@@ -169,22 +268,6 @@ function excluirItem(index) {
     atualizarHistorico();
 }
 
-
-function salvarResultado(){
-    if (ultimoResultado === ""){
-        alert("Calcule primeiro!!");
-        return;
-    }
-
-    let historico = JSON.parse(localStorage.getItem("historico")) || [];
-
-    historico.push(ultimoResultado);
-
-    localStorage.setItem("historico", JSON.stringify(historico));
-
-    alert("Salvo no historico!!");
-}
-
 function salvarResultado(){
     if (ultimoResultado === ""){
         alert("Calcule primeiro!!");
@@ -200,13 +283,17 @@ function salvarResultado(){
 
     let historico = JSON.parse(localStorage.getItem("historico")) || [];
 
-    let registro = nome + " → " + ultimoResultado;
+    let registro = {
+        nome: nome,
+        bf: ultimoBF,
+        peso: ultimoPeso
+    };
 
     historico.push(registro);
 
     localStorage.setItem("historico", JSON.stringify(historico));
 
-    alert("Salvo com sucesso!!");
+    alert("Salvo no historico!!");
 }
 
 function limparCampos(){
@@ -227,4 +314,53 @@ function limparCampos(){
 
 document.getElementById("btnLimpar").addEventListener("click", limparCampos);
 
+function nivelAtividade(valor, botao){
+
+    multiplicadorAtividade = valor;
+
+    let botoes = document.querySelectorAll(".btnAtividade");
+    botoes.forEach(btn => {
+        btn.innerText = btn.innerText.replace("◀ ", "")
+        .replace(" ▶", "");
+    });
+    botao.innerText = "◀ " + botao.innerText + " ▶";
+}
+
+function verManutencao(manutencao, peso, lbm, botao){
+
+    let div = document.getElementById("infoManutencao");
+    
+    if(manutencaoAberta){
+        div.innerHTML = "";
+        botao.innerText = "Ver manutenção";
+        manutencaoAberta = false;
+
+    } else{
+        let PTN = lbm * 2.2;
+        let LIP = peso * 0.8;
+        let caloriasProteina = PTN * 4;
+        let caloriasGordura = LIP * 9;
+
+        let CHO = (
+            manutencao - caloriasProteina - caloriasGordura) / 4;
+    
+    div.innerHTML = `
+        <h3>Detalhes da Manutenção</h3>
+
+        <p>Calorias diárias: ${manutencao.toFixed(0)} kcal</p>
+        <p>Cutting leve: ${(manutencao - 300).toFixed(0)} kcal</p>
+        <p>Cutting agressivo: ${(manutencao - 500).toFixed(0)} kcal</p>
+        <p>Bulking leve: ${(manutencao + 300).toFixed(0)} kcal</p>
+        <p>Bulking agressivo: ${(manutencao + 500).toFixed(0)} kcal</p>
+
+        <p>Calorias: ${manutencao.toFixed(0)} kcal</p>
+        <p>PTN: ${PTN.toFixed(0)} g</p>
+        <p>LIP: ${LIP.toFixed(0)} g</p>
+        <p>CHO: ${CHO.toFixed(0)} g</p>
+    `;
+
+    botao.innerText = "Fechar manutenção";
+    manutencaoAberta = true;
+    }
+}
 
